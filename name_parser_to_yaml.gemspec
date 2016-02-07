@@ -9,9 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Prokop Simek"]
   spec.email         = ["prokop.simek@applifting.cz"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Name and their name days parser to yaml.}
+  spec.description   = %q{Gem parses names and their name days from server behindname.com and saves them formatted into yaml.}
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
@@ -26,6 +25,10 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  spec.add_dependency "httparty"
+  spec.add_dependency "nokogiri"
+  spec.add_dependency "open-uri"
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"

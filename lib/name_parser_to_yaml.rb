@@ -14,8 +14,13 @@ module NameParserToYaml
     end
 
     def generate!
+      file = File.join(country + '.yml')
+      File.delete(file) if File.exist?(file)
+
       names_in_country = get_all_names_in_country
-      save_names_to_yaml!(names_in_country)
+
+      yamled = names_in_country.to_yaml
+      File.open(file, 'w') { |file| file.write(yamled) }
     end
 
     def get_all_names_in_country
@@ -29,15 +34,6 @@ module NameParserToYaml
 
       all_names.flatten
     end
-
-    def save_names_to_yaml!(country_names)
-      yamled = country_names.to_yaml
-
-      file = File.join(country + '.yml')
-      file.delete! rescue ''
-      File.open(file, 'w') { |file| file.write(yamled) }
-    end
-
 
     def get_country_url
       PARSE_URL + '/names/usage/' + country
@@ -65,7 +61,8 @@ module NameParserToYaml
       country_href = hrefs.select{ |a| a.content.parameterize.include?(country.parameterize) }.first
       if country_href
         text_after = country_href.next.content.gsub(': ', '')
-        return DateTime.civil_from_format(:local, text_after.split(' ').second.to_i, Date::MONTHNAMES.index("#{text_after.split(' ').first}")).to_date
+        formatted = DateTime.civil_from_format(:local, text_after.split(' ').second.to_i, Date::MONTHNAMES.index("#{text_after.split(' ').first}"))
+        return formatted.to_date.to_formatted_s(:short).to_s[1..-1]
       else
         return nil
       end

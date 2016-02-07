@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-    $ NameParserToYaml.new('czech').generate!
+    NameParserToYaml.new('czech').generate!
 
 ## Development
 

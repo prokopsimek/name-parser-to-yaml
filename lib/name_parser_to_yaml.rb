@@ -1,5 +1,7 @@
 require "name_parser_to_yaml/version"
 require 'open-uri'
+require 'nokogiri'
+require 'active_support/all'
 
 module NameParserToYaml
 
@@ -28,6 +30,7 @@ module NameParserToYaml
       all_names = []
 
       4.times do |i|
+        i += 1
         parsed_nokogiri_body = parse_with_nokogiri(country_url + '/' + i.to_s)
         all_names << parse_names_from_country(parsed_nokogiri_body)
       end
@@ -55,7 +58,6 @@ module NameParserToYaml
     end
 
     def get_name_day(name)
-      # , name_day: get_name_day(name.parameterize)
       parsed_body = parse_with_nokogiri(PARSE_URL + '/name/' + name + '/namedays')
       hrefs = parsed_body.css('.body a')
       country_href = hrefs.select{ |a| a.content.parameterize.include?(country.parameterize) }.first

@@ -28,20 +28,20 @@ module NameParserToYaml
 
     def get_all_names_in_country
       country_url = get_country_url
-      all_names = []
+      names_hash = {}
 
       i = 1
       parsed_nokogiri_body = parse_with_nokogiri(country_url + '/' + i.to_s)
 
       while parsed_nokogiri_body.css('.body .browsename').any?
         puts "Parsing page: #{i}"
-        all_names << parse_names_from_country(parsed_nokogiri_body)
+        names_hash = parse_names_from_country(parsed_nokogiri_body, names_hash)
 
         i = (i.to_i + 1)
         parsed_nokogiri_body = parse_with_nokogiri(country_url + '/' + i.to_s)
       end
 
-      all_names.flatten
+      names_hash
     end
 
     def get_country_url
@@ -52,11 +52,10 @@ module NameParserToYaml
       body = Nokogiri::HTML(open(url))
     end
 
-    def parse_names_from_country(parsed_nokogiri_body)
-      names_hash = {}
+    def parse_names_from_country(parsed_nokogiri_body, names_hash)
       puts ""
       print "Parsing name: "
-      parsed_nokogiri_body.css('.body .browsename').each do |row_with_name|
+      parsed_nokogiri_body.css('.body .browsename').first(2).each do |row_with_name|
         name = row_with_name.css('b a').first.content
         name = name.split(' ').first
         print "#{name}"

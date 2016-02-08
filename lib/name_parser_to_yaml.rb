@@ -55,7 +55,7 @@ module NameParserToYaml
     def parse_names_from_country(parsed_nokogiri_body, names_hash)
       puts ""
       print "Parsing name: "
-      parsed_nokogiri_body.css('.body .browsename').first(2).each do |row_with_name|
+      parsed_nokogiri_body.css('.body .browsename').each do |row_with_name|
         name = row_with_name.css('b a').first.content
         name = name.split(' ').first
         print "#{name}"
